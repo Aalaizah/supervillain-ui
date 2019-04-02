@@ -264,8 +264,8 @@ local SlotUpdate = function(self, slotID)
 
 	if(slot.NewItemTexture) then slot.NewItemTexture:Hide() end;
 	if(slot.flashAnim) then slot.flashAnim:Stop() end;
-  if(slot.newitemglowAnim) then slot.newitemglowAnim:Stop() end;
-
+    if(slot.newitemglowAnim) then slot.newitemglowAnim:Stop() end;
+    
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
 	SetItemButtonDesaturated(slot, locked, 0.5, 0.5, 0.5)
@@ -381,14 +381,11 @@ local ContainerFrame_UpdateLayout = function(self)
 					globalName = "SVUI_MainBag" .. bagID .. "Slot";
 					bagTemplate = "BagSlotButtonTemplate";
 				end
-
-				bagSlot = CreateFrame("CheckButton", globalName, menu, bagTemplate)
+				bagSlot = CreateFrame("ItemButton", globalName, menu, bagTemplate)
 				bagSlot.parent = self;
 
 				bagSlot:SetNormalTexture("")
-				bagSlot:SetCheckedTexture("")
 				bagSlot:SetPushedTexture("")
-				--bagSlot:SetScript("OnClick", nil)
 				bagSlot:RemoveTextures()
 				bagSlot:SetStyle("!_ActionSlot");
 
@@ -406,7 +403,6 @@ local ContainerFrame_UpdateLayout = function(self)
 					bagSlot:SetID(bagID - 4)
 					bagSlot.internalID = bagID;
 				else
-					-- MOD:NewFilterMenu(bagSlot)
 					bagSlot.internalID = (bagID + 1);
 				end
 
@@ -498,10 +494,6 @@ local ContainerFrame_UpdateLayout = function(self)
 						self.Bags[bagID][slotID].IconBorder:Die()
 					end
 
-					-- if(self.Bags[bagID][slotID].flashAnim) then
-					-- 	self.Bags[bagID][slotID].flashAnim.Play = SV.fubar
-					-- end
-
 					if(not self.Bags[bagID][slotID].NewItemTexture) then
 						self.Bags[bagID][slotID].NewItemTexture = self.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY", 1);
 					end
@@ -571,9 +563,13 @@ local ContainerFrame_UpdateLayout = function(self)
 					lastRowButton = self.Bags[bagID][slotID];
 					rowCount = rowCount + 1;
 				end
-
 				lastButton = self.Bags[bagID][slotID];
-
+                if(not self.Bags[bagID][slotID].Count) then
+                    self.Bags[bagID][slotID].Count = self.Bags[bagID][slotID]:CreateFontString(nil, "ARTWORK")
+                    self.Bags[bagID][slotID].Count:SetFontObject(SVUI_Font_Default)
+                    self.Bags[bagID][slotID].Count:ClearAllPoints()
+                    self.Bags[bagID][slotID].Count:SetPoint("BOTTOMRIGHT", self.Bags[bagID][slotID], "BOTTOMRIGHT", 0, 0)
+                end
 				self.Bags[bagID]:SlotUpdate(slotID);
 			end
 
@@ -1305,6 +1301,7 @@ do
 		end
 
 		if(SV.db.Inventory.separateBags) then
+            print("hello")
 			for i, bagID in ipairs(frame.BagIDs) do
 				if(bagID > 0) then
 					local singleBagFrameName = "SVUI_ContainerFrameBag" .. bagID;
