@@ -332,8 +332,8 @@ local function Enable(self)
 		return true
 	end
 	--Need to run these always
-	self:RegisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
+	self:RegisterEvent("PLAYER_TALENT_UPDATE", CheckSpec, true)
+	self:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec, true)
 	if playerClass == "DRUID" then
 		self:RegisterEvent("SPELLS_CHANGED", CheckSymbiosis)
 	end
@@ -344,8 +344,8 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_AURA', Update)
 		self.RaidDebuffs:Hide()
 	end
-	self:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
-	self:UnregisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
+	self:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec, true)
+	self:UnregisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec, true)
 	if playerClass == "DRUID" then
 		self:UnregisterEvent("SPELLS_CHANGED", CheckSymbiosis)
 	end

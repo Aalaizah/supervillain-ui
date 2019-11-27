@@ -255,9 +255,9 @@ local function Enable(self, unit)
 
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update)
 		self:RegisterEvent("UNIT_POWER_UPDATE", Update)
-		self:RegisterEvent("PLAYER_LEVEL_UP", Update)
+		self:RegisterEvent("PLAYER_LEVEL_UP", Update, true)
 		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
-		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', Path)
+		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', Path, true)
 		
 		for i = 1, 6 do
 			if not bar[i]:GetStatusBarTexture() then
@@ -292,9 +292,9 @@ local function Disable(self)
 	if self.KungFu then
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
 		self:UnregisterEvent("UNIT_POWER_UPDATE", Update)
-		self:UnregisterEvent("PLAYER_LEVEL_UP", Update)
+		self:UnregisterEvent("PLAYER_LEVEL_UP", Update, true)
 		self:UnregisterEvent("UNIT_DISPLAYPOWER", Path)
-		self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', Path)
+		self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', Path, true)
 
 		MonkStaggerBar.Show = nil
 		MonkStaggerBar:Show()

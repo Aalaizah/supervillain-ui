@@ -485,14 +485,14 @@ function MOD:RefreshUnitLayout(frame, template)
 
 	--[[ THREAT LAYOUT ]]--
 
-	if frame.Threat then
-		local threat = frame.Threat;
+	if frame.ThreatIndicator then
+		local threat = frame.ThreatIndicator;
 		if db.threatEnabled then
-			if not frame:IsElementEnabled('Threat')then
-				frame:EnableElement('Threat')
+			if not frame:IsElementEnabled('ThreatIndicator')then
+				frame:EnableElement('ThreatIndicator')
 			end
-		elseif frame:IsElementEnabled('Threat')then
-			frame:DisableElement('Threat')
+		elseif frame:IsElementEnabled('ThreatIndicator')then
+			frame:DisableElement('ThreatIndicator')
 		end
 	end
 
@@ -607,8 +607,8 @@ function MOD:RefreshUnitLayout(frame, template)
 		health.colorOverlay = nil;
 		health.overlayAnimation = PORTRAIT_OVERLAY_ANIMATION;
 
-		if((not GRID_MODE) and frame.HealPrediction) then
-			frame.HealPrediction["frequentUpdates"] = health.frequentUpdates
+		if((not GRID_MODE) and frame.HealthPrediction) then
+			frame.HealthPrediction["frequentUpdates"] = health.frequentUpdates
 		end
 
 		if((not GRID_MODE) and PORTRAIT_OVERLAY and SV.db.UnitFrames.forceHealthColor) then
@@ -704,8 +704,8 @@ function MOD:RefreshUnitLayout(frame, template)
 
 		--[[ ALTPOWER LAYOUT ]]--
 
-		if(frame.AltPowerBar) then
-			local altPower = frame.AltPowerBar;
+		if(frame.AlternativePower) then
+			local altPower = frame.AlternativePower;
 			if(db.power.enable) then
 				local Alt_OnShow = function()
 					if(not POWER_DETACHED) then
@@ -720,7 +720,7 @@ function MOD:RefreshUnitLayout(frame, template)
 					altPower.text:SetText("")
 				end
 
-				frame:EnableElement('AltPowerBar')
+				frame:EnableElement('AlternativePower')
 				if(TEXT_GRIP.Health) then
 					altPower.text:SetFont(TEXT_GRIP.Health:GetFont())
 				end
@@ -732,7 +732,7 @@ function MOD:RefreshUnitLayout(frame, template)
 				altPower:HookScript("OnShow", Alt_OnShow)
 				altPower:HookScript("OnHide", Alt_OnHide)
 			else
-				frame:DisableElement('AltPowerBar')
+				frame:DisableElement('AlternativePower')
 				altPower.text:SetAlpha(0)
 				altPower:Hide()
 			end
@@ -936,7 +936,7 @@ function MOD:RefreshUnitLayout(frame, template)
 					SV:SetReversePoint(BUFF_GRIP, db.buffs.anchorPoint, attachAnchor, db.buffs.xOffset + BOTTOM_MODIFIER, db.buffs.yOffset)
 					BUFF_GRIP["growth-y"] = db.buffs.verticalGrowth;
 					BUFF_GRIP["growth-x"] = db.buffs.horizontalGrowth;
-					BUFF_GRIP:SetSorting(db.buffs.sort)
+					--BUFF_GRIP:SetSorting(db.buffs.sort)
 					BUFF_GRIP:ForceUpdate()
 				else
 					BUFF_GRIP:Hide()
@@ -1002,7 +1002,7 @@ function MOD:RefreshUnitLayout(frame, template)
 					SV:SetReversePoint(DEBUFF_GRIP, db.debuffs.anchorPoint, attachAnchor, db.debuffs.xOffset + BOTTOM_MODIFIER, db.debuffs.yOffset)
 					DEBUFF_GRIP["growth-y"] = db.debuffs.verticalGrowth;
 					DEBUFF_GRIP["growth-x"] = db.debuffs.horizontalGrowth;
-					DEBUFF_GRIP:SetSorting(db.debuffs.sort)
+					--DEBUFF_GRIP:SetSorting(db.debuffs.sort)
 					DEBUFF_GRIP:ForceUpdate()
 				else
 					DEBUFF_GRIP:Hide()
@@ -1053,11 +1053,11 @@ function MOD:RefreshUnitLayout(frame, template)
 
 			--[[ RAIDICON ]]--
 
-			if(ico.raidicon and frame.RaidIcon) then
-				local raidIcon = frame.RaidIcon;
+			if(ico.raidicon and frame.RaidTargetIndicator) then
+				local raidIcon = frame.RaidTargetIndicator;
 				if ico.raidicon.enable then
 					raidIcon:Show()
-					frame:EnableElement('RaidIcon')
+					frame:EnableElement('RaidTargetIndicator')
 					local size = ico.raidicon.size;
 					raidIcon:ClearAllPoints()
 
@@ -1078,11 +1078,11 @@ function MOD:RefreshUnitLayout(frame, template)
 
 			--[[ ROLEICON ]]--
 
-			if(ico.roleIcon and frame.LFDRole) then
-				local lfd = frame.LFDRole;
+			if(ico.roleIcon and frame.GroupRoleIndicator) then
+				local lfd = frame.GroupRoleIndicator;
 				if(not MINI_GRID and ico.roleIcon.enable) then
 					lfd:Show()
-					frame:EnableElement('LFDRole')
+					frame:EnableElement('GroupRoleIndicator')
 					local size = ico.roleIcon.size;
 					lfd:ClearAllPoints()
 
@@ -1096,7 +1096,7 @@ function MOD:RefreshUnitLayout(frame, template)
 						SV:SetReversePoint(lfd, ico.roleIcon.attachTo, MASTER_GRIP, ico.roleIcon.xOffset, ico.roleIcon.yOffset)
 					end
 				else
-					frame:DisableElement('LFDRole')
+					frame:DisableElement('GroupRoleIndicator')
 					lfd:Hide()
 				end
 			end
@@ -1107,8 +1107,8 @@ function MOD:RefreshUnitLayout(frame, template)
 				local roles = frame.RaidRoleFramesAnchor;
 				if(not MINI_GRID and ico.raidRoleIcons.enable) then
 					roles:Show()
-					frame:EnableElement('Leader')
-					frame:EnableElement('MasterLooter')
+					frame:EnableElement('LeaderIndicator')
+					frame:EnableElement('MasterLooterIndicator')
 					local size = ico.raidRoleIcons.size;
 					roles:ClearAllPoints()
 
@@ -1123,8 +1123,8 @@ function MOD:RefreshUnitLayout(frame, template)
 					end
 				else
 					roles:Hide()
-					frame:DisableElement('Leader')
-					frame:DisableElement('MasterLooter')
+					frame:DisableElement('LeaderIndicator')
+					frame:DisableElement('MasterLooterIndicator')
 				end
 			end
 
@@ -1133,14 +1133,14 @@ function MOD:RefreshUnitLayout(frame, template)
 
 	--[[ HEAL PREDICTION LAYOUT ]]--
 
-	if frame.HealPrediction then
+	if frame.HealthPrediction then
 		if db.predict then
-			if not frame:IsElementEnabled('HealPrediction')then
-				frame:EnableElement('HealPrediction')
+			if not frame:IsElementEnabled('HealthPrediction')then
+				frame:EnableElement('HealthPrediction')
 			end
 		else
-			if frame:IsElementEnabled('HealPrediction')then
-				frame:DisableElement('HealPrediction')
+			if frame:IsElementEnabled('HealthPrediction')then
+				frame:DisableElement('HealthPrediction')
 			end
 		end
 	end

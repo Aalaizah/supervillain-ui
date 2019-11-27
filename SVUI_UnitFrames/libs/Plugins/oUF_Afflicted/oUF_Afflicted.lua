@@ -142,8 +142,8 @@ local function Enable(self)
 	if(afflicted.ClassFilter and (not CanDispel[playerClass])) then return end
 
 	self:RegisterEvent("UNIT_AURA", Update)
-	self:RegisterEvent("PLAYER_TALENT_UPDATE", UpdateTalentSpec)
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED", UpdateTalentSpec)
+	self:RegisterEvent("PLAYER_TALENT_UPDATE", UpdateTalentSpec, true)
+	self:RegisterEvent("CHARACTER_POINTS_CHANGED", UpdateTalentSpec, true)
 
 	UpdateTalentSpec(self)
 
@@ -160,8 +160,8 @@ local function Disable(self)
 	local afflicted = self.Afflicted
 	if(not afflicted) then return end
 	self:UnregisterEvent("UNIT_AURA", Update)
-	self:UnregisterEvent("PLAYER_TALENT_UPDATE", UpdateTalentSpec)
-	self:UnregisterEvent("CHARACTER_POINTS_CHANGED", UpdateTalentSpec)
+	self:UnregisterEvent("PLAYER_TALENT_UPDATE", UpdateTalentSpec, true)
+	self:UnregisterEvent("CHARACTER_POINTS_CHANGED", UpdateTalentSpec, true)
 
 	if playerClass == "DRUID" then
     self:UnregisterEvent("SPELLS_CHANGED", CheckSymbiosis)

@@ -213,18 +213,18 @@ local UpdatePlayerFrame = function(self)
         end
     end
     do
-        local combat = self.Combat;
+        local combat = self.CombatIndicator;
         if combat then
             if iconDB and iconDB.combatIcon and iconDB.combatIcon.enable then
                 local size = iconDB.combatIcon.size;
                 combat:ClearAllPoints()
                 combat:SetSize(size, size)
                 SV:SetReversePoint(combat, iconDB.combatIcon.attachTo, self, iconDB.combatIcon.xOffset, iconDB.combatIcon.yOffset)
-                if not self:IsElementEnabled("Combat")then
-                    self:EnableElement("Combat")
+                if not self:IsElementEnabled("CombatIndicator")then
+                    self:EnableElement("CombatIndicator")
                 end
-            elseif self:IsElementEnabled("Combat")then
-                self:DisableElement("Combat")
+            elseif self:IsElementEnabled("CombatIndicator")then
+                self:DisableElement("CombatIndicator")
                 combat:Hide()
             end
         end
@@ -279,7 +279,7 @@ local UpdatePlayerFrame = function(self)
         end
     end
 
-    self:UpdateAllElements()
+    self:UpdateAllElements("UpdatePlayerFrame")
 end
 
 CONSTRUCTORS["player"] = function(self, unit)
@@ -301,12 +301,12 @@ CONSTRUCTORS["player"] = function(self, unit)
     self.Castbar = MOD:CreateCastbar(self, false, L["Player Castbar"], true, true, false, true)
     MOD:CreateExperienceRepBar(self)
     self.ClassBar = MOD:CreateClassBar(self)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
+    self.RaidRoleIndicator = MOD:CreateRaidIcon(self)
     MOD:CreatePlayerIndicators(self)
     self.PvPText = self.TextGrip:CreateFontString(nil,'OVERLAY')
     self.PvPText:SetFontObject(SpellFont_Small)
     self.Afflicted = MOD:CreateAfflicted(self)
-    self.HealPrediction = MOD:CreateHealPrediction(self, true)
+    self.HealthPrediction = MOD:CreateHealPrediction(self, true)
     -- JV - 20160919 : Resolve mechanic is now gone as of Legion.
     --self.ResolveBar = MOD:CreateResolveBar(self)
     self.CombatFade = false;
@@ -353,7 +353,7 @@ local UpdateTargetFrame = function(self)
         end
     end
 
-    self:UpdateAllElements()
+    self:UpdateAllElements("UpdateTargetFrame")
 end
 
 CONSTRUCTORS["target"] = function(self, unit)
@@ -369,7 +369,7 @@ CONSTRUCTORS["target"] = function(self, unit)
 
     self.Health = MOD:CreateHealthBar(self, true)
     self.Health.frequentUpdates = true
-    self.HealPrediction = MOD:CreateHealPrediction(self, true)
+    self.HealthPrediction = MOD:CreateHealPrediction(self, true)
 
     self.Power = MOD:CreatePowerBar(self)
     self.Power.frequentUpdates = true
@@ -380,7 +380,7 @@ CONSTRUCTORS["target"] = function(self, unit)
 
     MOD:CreateAuraFrames(self, key, true)
     self.Afflicted = MOD:CreateAfflicted(self)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
+    self.RaidRoleIndicator = MOD:CreateRaidIcon(self)
 
     local xray = CreateFrame("Button", "SVUI_XRayFocus", self, "SecureActionButtonTemplate")
     xray:SetPoint("TOPRIGHT", 12, 12)
@@ -431,7 +431,7 @@ local UpdateTargetTargetFrame = function(self)
     self:SetSize(UNIT_WIDTH, UNIT_HEIGHT)
     self.Grip:SetSize(self:GetSize())
     MOD:RefreshUnitLayout(self, "targettarget")
-    self:UpdateAllElements()
+    self:UpdateAllElements("UpdateTargetTargetFrame")
 end
 
 CONSTRUCTORS["targettarget"] = function(self, unit)
@@ -448,7 +448,7 @@ CONSTRUCTORS["targettarget"] = function(self, unit)
     self.Power = MOD:CreatePowerBar(self)
     MOD:CreatePortrait(self, true)
     MOD:CreateAuraFrames(self, key)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
+    self.RaidRoleIndicator = MOD:CreateRaidIcon(self)
     self.Range = { insideAlpha = 1, outsideAlpha = 1 }
     self:SetPoint("LEFT", SVUI_Target, "RIGHT", 4, 0)
     SV:NewAnchor(self, L["TargetTarget Frame"])
@@ -478,7 +478,7 @@ local UpdatePetFrame = function(self)
             self:SetParent(SVUI_Player)
         end
     end
-    self:UpdateAllElements()
+    self:UpdateAllElements("UpdatePetFrame")
 end
 
 CONSTRUCTORS["pet"] = function(self, unit)
@@ -491,14 +491,14 @@ CONSTRUCTORS["pet"] = function(self, unit)
     MOD:SetActionPanel(self, key)
     self.Health = MOD:CreateHealthBar(self, true)
     self.Health.frequentUpdates = true;
-    self.HealPrediction = MOD:CreateHealPrediction(self)
+    self.HealthPrediction = MOD:CreateHealPrediction(self)
     self.Power = MOD:CreatePowerBar(self)
     self.Power.frequentUpdates = false;
     MOD:CreatePortrait(self, true)
     self.Castbar = MOD:CreateCastbar(self, false, L["Pet Castbar"], false)
     MOD:CreateAuraFrames(self, key)
     self.AuraWatch = MOD:CreateAuraWatch(self, key)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
+    self.RaidRoleIndicator = MOD:CreateRaidIcon(self)
     self.Range = { insideAlpha = 1, outsideAlpha = 1 }
     self:SetPoint("RIGHT", SVUI_Player, "LEFT", -4, 0)
     SV:NewAnchor(self, L["Pet Frame"])
@@ -527,7 +527,7 @@ local UpdatePetTargetFrame = function(self)
             self:SetParent(SVUI_Pet)
         end
     end
-    self:UpdateAllElements()
+    self:UpdateAllElements("UpdatePetTargetFrame")
 end
 
 CONSTRUCTORS["pettarget"] = function(self, unit)
@@ -569,7 +569,7 @@ local UpdateFocusFrame = function(self)
     self.Grip:SetSize(self:GetSize())
     MOD:RefreshUnitLayout(self, "focus")
 
-    self:UpdateAllElements()
+    self:UpdateAllElements("UpdateFocusFrame")
 end
 
 CONSTRUCTORS["focus"] = function(self, unit)
@@ -586,7 +586,7 @@ CONSTRUCTORS["focus"] = function(self, unit)
     self.Health = MOD:CreateHealthBar(self, true)
     self.Health.frequentUpdates = true
 
-    self.HealPrediction = MOD:CreateHealPrediction(self, true)
+    self.HealthPrediction = MOD:CreateHealPrediction(self, true)
     self.Power = MOD:CreatePowerBar(self)
 
     self.Castbar = MOD:CreateCastbar(self, false, L["Focus Castbar"])
@@ -595,7 +595,7 @@ CONSTRUCTORS["focus"] = function(self, unit)
     self.Castbar.LatencyTexture:Hide()
     MOD:CreateAuraFrames(self, key, true)
     self.AuraWatch = MOD:CreateAuraWatch(self, key)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
+    self.RaidRoleIndicator = MOD:CreateRaidIcon(self)
     self.Range = { insideAlpha = 1, outsideAlpha = 1 }
 
     local xray = CreateFrame("Button", "SVUI_XRayFocusClear", self, "SecureActionButtonTemplate")
@@ -645,7 +645,7 @@ local UpdateFocusTargetFrame = function(self)
     self:SetSize(UNIT_WIDTH, UNIT_HEIGHT)
     self.Grip:SetSize(self:GetSize())
     MOD:RefreshUnitLayout(self, "focustarget")
-    self:UpdateAllElements()
+    self:UpdateAllElements("UpdateFocusTargetFrame")
 end
 
 CONSTRUCTORS["focustarget"] = function(self, unit)
@@ -661,7 +661,7 @@ CONSTRUCTORS["focustarget"] = function(self, unit)
     self.Health = MOD:CreateHealthBar(self, true)
     self.Power = MOD:CreatePowerBar(self)
     MOD:CreateAuraFrames(self, key)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
+    self.RaidRoleIndicator = MOD:CreateRaidIcon(self)
     self.Range = { insideAlpha = 1, outsideAlpha = 1 }
     self:SetPoint("LEFT", SVUI_Focus, "RIGHT", 12, 0)
     self.snapOffset = -7
@@ -702,7 +702,7 @@ local UpdateBossFrame = function(self)
 
     self:RegisterForClicks(SV.db.UnitFrames.fastClickTarget and "AnyDown" or "AnyUp")
     MOD:RefreshUnitLayout(self, "boss")
-    self:UpdateAllElements()
+    self:UpdateAllElements("UpdateBossFrame")
 end
 
 CONSTRUCTORS["boss"] = function(self, unit)
@@ -724,8 +724,8 @@ CONSTRUCTORS["boss"] = function(self, unit)
     MOD:CreateAuraFrames(self, key)
     self.Afflicted = MOD:CreateAfflicted(self)
     self.Castbar = MOD:CreateCastbar(self, true, nil, true, nil, true)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
-    --self.AltPowerBar = MOD:CreateAltPowerBar(self)
+    self.RaidRoleIndicator = MOD:CreateRaidIcon(self)
+    self.AlternativePower = MOD:CreateAltPowerBar(self)
 
     self.Restrict = RestrictElement
     self.Allow = AllowElement
@@ -836,7 +836,7 @@ local UpdateArenaFrame = function(self)
         end
     end
 
-    self:UpdateAllElements()
+    self:UpdateAllElements("UpdateArenaFrame")
 end
 
 CONSTRUCTORS["arena"] = function(self, unit)

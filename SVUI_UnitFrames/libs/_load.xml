@@ -1,39 +1,47 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/">
 
 	<!-- oUF Core Files -->
-	<Script file='oUF\init.lua' />
-	<Script file='oUF\private.lua' />
-	<Script file='oUF\ouf.lua' />
-	<Script file='oUF\events.lua'/>
-	<Script file='oUF\factory.lua' />
-	<Script file='oUF\blizzard.lua' />
-	<Script file='oUF\units.lua' />
-	<Script file='oUF\colors.lua' />
-	<Script file='oUF\finalize.lua' />
+	<Script file="ouF\init.lua"/>
+	<Script file="ouF\private.lua"/>
+	<Script file="ouF\ouf.lua"/>
+	<Script file="ouF\events.lua"/>
+	<Script file="ouF\factory.lua"/>
+	<Script file="ouF\blizzard.lua"/>
+	<Script file="ouF\units.lua"/>
+	<Script file="ouF\colors.lua"/>
 
-	<Script file='oUF\elements\power.lua' />
-	<Script file='oUF\elements\aura.lua' />
-	<Script file='oUF\elements\health.lua' />
-	<Script file='oUF\elements\ricons.lua' />
-	<Script file='oUF\elements\leader.lua' />
-	<Script file='oUF\elements\combat.lua' />
-	<Script file='oUF\elements\resting.lua' />
-	<Script file='oUF\elements\pvp.lua' />
-	<Script file='oUF\elements\portraits.lua' />
-	<Script file='oUF\elements\range.lua' />
-	<Script file='oUF\elements\castbar.lua' />
-	<Script file='oUF\elements\threat.lua' />
-	<Script file='oUF\elements\tags.lua' />
-	<Script file='oUF\elements\masterlooter.lua' />
-	<Script file='oUF\elements\lfdrole.lua' />
-	<Script file='oUF\elements\healprediction.lua' />
-	<Script file='oUF\elements\picon.lua' />
-	<Script file='oUF\elements\readycheck.lua' />
-	<Script file='oUF\elements\qicon.lua' />
-	<Script file='oUF\elements\altpowerbar.lua' />
-	<Script file='oUF\elements\resurrect.lua' />
-	<Script file='oUF\elements\assistant.lua' />
-	<Script file='oUF\elements\maintank.lua' />
+	<Script file="ouF\elements\additionalpower.lua"/>
+	<Script file="ouF\elements\alternativepower.lua"/>
+	<Script file="ouF\elements\assistantindicator.lua"/>
+	<Script file="ouF\elements\auras.lua"/>
+	<Script file="ouF\elements\castbar.lua"/>
+	<Script file="ouF\elements\classpower.lua"/>
+	<Script file="ouF\elements\combatindicator.lua"/>
+	<Script file="ouF\elements\grouproleindicator.lua"/>
+	<Script file="ouF\elements\health.lua"/>
+	<Script file="ouF\elements\healthprediction.lua"/>
+	<Script file="ouF\elements\leaderindicator.lua"/>
+	<Script file="ouF\elements\phaseindicator.lua"/>
+	<Script file="ouF\elements\portrait.lua"/>
+	<Script file="ouF\elements\power.lua"/>
+	<Script file="ouF\elements\powerprediction.lua"/>
+	<Script file="ouF\elements\pvpclassificationindicator.lua"/>
+	<Script file="ouF\elements\pvpindicator.lua"/>
+	<Script file="ouF\elements\questindicator.lua"/>
+	<Script file="ouF\elements\raidroleindicator.lua"/>
+	<Script file="ouF\elements\raidtargetindicator.lua"/>
+	<Script file="ouF\elements\range.lua"/>
+	<Script file="ouF\elements\readycheckindicator.lua"/>
+	<Script file="ouF\elements\restingindicator.lua"/>
+	<Script file="ouF\elements\resurrectindicator.lua"/>
+	<Script file="ouF\elements\runes.lua"/>
+	<Script file="ouF\elements\stagger.lua"/>
+	<Script file="ouF\elements\summonindicator.lua"/>
+	<Script file="ouF\elements\tags.lua"/>
+	<Script file="ouF\elements\threatindicator.lua"/>
+	<Script file="ouF\elements\totems.lua"/>
+
+	<Script file="ouF\finalize.lua"/>
 
 	<!-- Clique support -->
 	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureUnitButtonTemplate,SecureHandlerEnterLeaveTemplate">

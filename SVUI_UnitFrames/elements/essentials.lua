@@ -143,7 +143,7 @@ end
 
 local UpdatePlayerThreat = function(self, event, unit)
 	if(unit ~= "player" or not IsLoggedIn()) then return end
-	local threat = self.Threat;
+	local threat = self.ThreatIndicator;
 	local aggro = self.Aggro;
 	local useAggro = aggro.isEnabled;
 	local status = UnitThreatSituation(unit)
@@ -152,7 +152,7 @@ local UpdatePlayerThreat = function(self, event, unit)
 		r, g, b = GetThreatStatusColor(status)
 		threat:SetBackdropBorderColor(r, g, b)
 		if(useAggro and (status > 1) and (not aggro:IsShown())) then
-			self.Combat:Hide()
+			self.CombatIndicator:Hide()
 			aggro:Show()
 		end
 		threat:Show()
@@ -161,7 +161,7 @@ local UpdatePlayerThreat = function(self, event, unit)
 		if(useAggro and aggro:IsShown()) then
 			aggro:Hide()
 			if(UnitAffectingCombat('player')) then
-				self.Combat:Show()
+				self.CombatIndicator:Show()
 			end
 		end
 		threat:Hide()
@@ -436,7 +436,7 @@ function MOD:SetActionPanel(frame, unit, noHealthText, noPowerText, noMiscText)
 	frame.StatusPanel.texture = frame.StatusPanel:CreateTexture(nil, "OVERLAY")
 	frame.StatusPanel.texture:SetAllPoints()
 	if(ThreatMapping[unit]) then
-		frame.Threat = CreateThreat(frame, unit)
+		frame.ThreatIndicator = CreateThreat(frame, unit)
 	end
 end
 
@@ -581,23 +581,24 @@ local function CreateAbsorbBar(parent, unit)
 	return absorbBar
 end
 
-local OverlayHealthUpdate = function(health, unit, min, max)
+local OverlayHealthUpdate = function(health, unit)
+	local currentHP, maxHP = UnitHealth(unit), UnitHealthMax(unit)
 	local disconnected = not UnitIsConnected(unit)
-	health:SetMinMaxValues(-max, 0)
-	health:SetValue(disconnected and 0 or -min)
-	local invisible = ((min == max) or UnitIsDeadOrGhost(unit) or disconnected);
+	health:SetMinMaxValues(-maxHP, 0)
+	health:SetValue(disconnected and 0 or -currentHP)
+	local invisible = ((currentHP == maxHP) or UnitIsDeadOrGhost(unit) or disconnected);
 	if invisible then health.lowAlerted = false end
 
 	if health.fillInverted then
 		health:SetReverseFill(true)
 	end
-	health.percent = invisible and 100 or ((min / max) * 100)
+	health.percent = invisible and 100 or ((currentHP / maxHP) * 100)
 	health.disconnected = disconnected
 
 	local bg = health.bg;
 	local mu = 0;
-	if(max ~= 0) then
-		mu = (min / max)
+	if(maxHP ~= 0) then
+		mu = (currentHP / maxHP)
 	end
 
 	if(invisible or not health.overlayAnimation) then

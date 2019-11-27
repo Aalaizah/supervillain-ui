@@ -505,7 +505,7 @@ function MOD:CreateCastbar(frame, reversed, moverName, ryu, useFader, isBoss, ha
 	castbar.PostCastStart = MOD.PostCastStart;
 	castbar.PostChannelStart = MOD.PostCastStart;
 	castbar.PostCastStop = MOD.PostCastStop;
-	castbar.PostChannelStop = MOD.PostCastStop;
+	castbar.PostChannelStop = MOD.PostChannelStop;
 	castbar.PostChannelUpdate = MOD.PostChannelUpdate;
 	castbar.PostCastInterruptible = MOD.PostCastInterruptible;
 	castbar.PostCastNotInterruptible = MOD.PostCastNotInterruptible;

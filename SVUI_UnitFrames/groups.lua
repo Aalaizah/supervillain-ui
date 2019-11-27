@@ -322,7 +322,7 @@ local PartyUnitUpdate = function(self)
         end
         MOD:RefreshUnitLayout(self, "party")
     end
-    self:EnableElement('ReadyCheck')
+    self:EnableElement('ReadyCheckIndicator')
     self:UpdateAllElements()
 end
 
@@ -389,13 +389,13 @@ BuildTemplates["party"] = function(self, unit)
         self.AuraWatch = MOD:CreateAuraWatch(self, "party")
         self.RaidDebuffs = MOD:CreateRaidDebuffs(self)
         self.Afflicted = MOD:CreateAfflicted(self)
-        self.ResurrectIcon = MOD:CreateResurectionIcon(self)
-        self.LFDRole = MOD:CreateRoleIcon(self)
+        self.ResurrectIndicator = MOD:CreateResurectionIcon(self)
+        self.GroupRoleIndicator = MOD:CreateRoleIcon(self)
         self.RaidRoleFramesAnchor = MOD:CreateRaidRoleFrames(self)
-        self.RaidIcon = MOD:CreateRaidIcon(self)
-        self.ReadyCheck = MOD:CreateReadyCheckIcon(self)
-        self.HealPrediction = MOD:CreateHealPrediction(self)
-        self.TargetGlow = self.Threat
+        self.RaidTargetIndicator = MOD:CreateRaidIcon(self)
+        self.ReadyCheckIndicator = MOD:CreateReadyCheckIcon(self)
+        self.HealthPrediction = MOD:CreateHealPrediction(self)
+        self.TargetGlow = self.ThreatIndicator
         tinsert(self.__elements, UpdateTargetGlow)
         self:RegisterEvent("PLAYER_TARGET_CHANGED", UpdateTargetGlow)
         self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdateTargetGlow)
@@ -430,7 +430,7 @@ local RaidUnitUpdate = function(self)
     MOD:RefreshUnitLayout(self, token)
 
     if(token ~= "raidpet") then
-        self:EnableElement("ReadyCheck")
+        self:EnableElement("ReadyCheckIndicator")
     end
     self:UpdateAllElements()
 end
@@ -490,18 +490,18 @@ BuildTemplates["raid"] = function(self, unit)
     self.AuraWatch = MOD:CreateAuraWatch(self, "raid")
     self.RaidDebuffs = MOD:CreateRaidDebuffs(self)
     self.Afflicted = MOD:CreateAfflicted(self)
-    self.ResurrectIcon = MOD:CreateResurectionIcon(self)
-    self.LFDRole = MOD:CreateRoleIcon(self)
+    self.ResurrectIndicator = MOD:CreateResurectionIcon(self)
+    self.GroupRoleIndicator = MOD:CreateRoleIcon(self)
     self.RaidRoleFramesAnchor = MOD:CreateRaidRoleFrames(self)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
-    self.ReadyCheck = MOD:CreateReadyCheckIcon(self)
-    self.HealPrediction = MOD:CreateHealPrediction(self)
+    self.RaidTargetIndicator = MOD:CreateRaidIcon(self)
+    self.ReadyCheckIndicator = MOD:CreateReadyCheckIcon(self)
+    self.HealthPrediction = MOD:CreateHealPrediction(self)
     self.Range = { insideAlpha = 1, outsideAlpha = 1 }
 
     self.Restrict = RestrictElement
     self.Allow = AllowElement
     self.UnitUpdate = RaidUnitUpdate
-    self.TargetGlow = self.Threat
+    self.TargetGlow = self.ThreatIndicator
     tinsert(self.__elements, UpdateTargetGlow)
 
     self:SetScript("OnEnter", UnitFrame_OnEnter)
@@ -567,14 +567,14 @@ BuildTemplates["raidpet"] = function(self, unit)
     self.AuraWatch = MOD:CreateAuraWatch(self, "raidpet")
     self.RaidDebuffs = MOD:CreateRaidDebuffs(self)
     self.Afflicted = MOD:CreateAfflicted(self)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
+    self.RaidTargetIndicator = MOD:CreateRaidIcon(self)
     self.Range = { insideAlpha = 1, outsideAlpha = 1 }
 
     self.Restrict = RestrictElement
     self.Allow = AllowElement
     self.UnitUpdate = RaidUnitUpdate
 
-    self.TargetGlow = self.Threat
+    self.TargetGlow = self.ThreatIndicator
     tinsert(self.__elements, UpdateTargetGlow)
 
     self:RegisterEvent("PLAYER_TARGET_CHANGED", UpdateTargetGlow)
@@ -683,8 +683,8 @@ BuildTemplates["tank"] = function(self, unit)
     self:SetScript("OnLeave", UnitFrame_OnLeave)
     MOD:SetActionPanel(self, "tank")
     self.Health = MOD:CreateHealthBar(self, true)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
-    self.RaidIcon:SetPoint("BOTTOMRIGHT")
+    self.RaidTargetIndicator = MOD:CreateRaidIcon(self)
+    self.RaidTargetIndicator:SetPoint("BOTTOMRIGHT")
 
     self.Restrict = RestrictElement
     self.Allow = AllowElement
@@ -800,8 +800,8 @@ BuildTemplates["assist"] = function(self, unit)
     self:SetScript("OnLeave", UnitFrame_OnLeave)
     MOD:SetActionPanel(self, "assist")
     self.Health = MOD:CreateHealthBar(self, true)
-    self.RaidIcon = MOD:CreateRaidIcon(self)
-    self.RaidIcon:SetPoint("BOTTOMRIGHT")
+    self.RaidTargetIndicator = MOD:CreateRaidIcon(self)
+    self.RaidTargetIndicator:SetPoint("BOTTOMRIGHT")
     self.Range = { insideAlpha = 1, outsideAlpha = 1 }
 
     self.Restrict = RestrictElement
@@ -1156,6 +1156,7 @@ function MOD:SetCustomFrame(token, layout)
         local groupFrame = self:SetGroupHeader(_G.SVUI_UnitFrameParent, nil, layout, layout, token)
         self.Headers[token] = groupFrame
     end
+	print(self.Headers[token]:GetAttribute("groupFilter"))
     self.Headers[token]:Show()
     self.Headers[token]:Update()
 end
@@ -1207,5 +1208,5 @@ function MOD:SetGroupFrame(token, forceUpdate)
         groupFrame:Hide()
         return
     end
-    --print('SetGroupFrame')
+    print('SetGroupFrame')
 end

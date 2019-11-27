@@ -131,7 +131,7 @@ local Enable = function(self, unit)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update)
 
 		if(trinket) then
-			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Update)
+			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Update, true)
 			self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", Update)
 			if not trinket.CD then
 				trinket.CD = CreateFrame("Cooldown", nil, trinket, "CooldownFrameTemplate")
@@ -174,7 +174,7 @@ local Disable = function(self)
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)		
 		if trinket then
-			self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Update)
+			self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Update, true)
 			self:UnregisterEvent("UNIT_SPELLCAST_SUCCEEDED", Update)
 			trinket:Hide()
 		end
